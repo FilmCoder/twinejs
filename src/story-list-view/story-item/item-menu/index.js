@@ -14,6 +14,7 @@ const {prompt} = require('../../../dialogs/prompt');
 const locale = require('../../../locale');
 const {publishStoryWithFormat} = require('../../../data/publish');
 const save = require('../../../file/save');
+const FileSaver = require('file-saver');
 
 module.exports = Vue.extend({
 	template: require('./index.html'),
@@ -121,6 +122,15 @@ module.exports = Vue.extend({
 			}).then(name => {
 				this.duplicateStory(this.story.id, name);
 			});
+		},
+
+		/**
+		 * Downloads the raw JSON data for the story, useful for parsing.
+		 */
+		saveRawJson() {
+			const story = this.existingStories.find(story => story.id === this.story.id);
+			const blob = new Blob([ JSON.stringify(story, null, 4) ], { type: 'application/json' });
+			FileSaver.saveAs(blob, this.story.name);
 		}
 	},
 
@@ -135,7 +145,8 @@ module.exports = Vue.extend({
 		getters: {
 			allFormats: state => state.storyFormat.formats,
 			appInfo: state => state.appInfo,
-			defaultFormat: state => state.pref.defaultFormat
+			defaultFormat: state => state.pref.defaultFormat,
+			existingStories: state => state.story.stories,
 		}
 	}
 });
