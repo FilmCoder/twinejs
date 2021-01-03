@@ -2,18 +2,18 @@
 
 const escape = require('lodash.escape');
 const Vue = require('vue');
-const {confirm} = require('../../../dialogs/confirm');
+const {confirm} = require('@src/dialogs/confirm');
 const {
 	deleteStory,
 	duplicateStory,
 	updateStory
-} = require('../../../data/actions/story');
-const {loadFormat} = require('../../../data/actions/story-format');
-const {playStory, testStory} = require('../../../common/launch-story');
-const {prompt} = require('../../../dialogs/prompt');
-const locale = require('../../../locale');
-const {publishStoryWithFormat} = require('../../../data/publish');
-const save = require('../../../file/save');
+} = require('@src/data/actions/story');
+const {loadFormat} = require('@src/data/actions/story-format');
+const {playStory, testStory} = require('@src/common/launch-story');
+const {prompt} = require('@src/dialogs/prompt');
+const locale = require('@src/locale');
+const {publishStoryWithFormat} = require('@src/data/publish');
+const save = require('@src/file/save');
 const FileSaver = require('file-saver');
 
 module.exports = Vue.extend({
@@ -27,7 +27,7 @@ module.exports = Vue.extend({
 	},
 
 	components: {
-		'drop-down': require('../../../ui/drop-down')
+		'drop-down': require('@src/ui/drop-down')
 	},
 
 	methods: {

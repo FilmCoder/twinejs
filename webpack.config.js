@@ -22,6 +22,11 @@ const config = (module.exports = {
 		),
 		filename: 'twine.js'
 	},
+	resolve: {
+		alias: {
+		  '@src': path.resolve(__dirname, 'src/'),
+		}
+	},
 	module: {
 		rules: [
 			/*

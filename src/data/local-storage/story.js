@@ -5,7 +5,7 @@ time. As a result, saving requires that you start and end a transaction
 manually. This minimizes the number of writes to local storage.
 */
 
-let { createStory } = require('../actions/story');
+let { createStory, deleteStory } = require('../actions/story');
 let { passageDefaults, storyDefaults } = require('../store/story');
 let commaList = require('./comma-list');
 
@@ -108,8 +108,15 @@ const story = module.exports = {
 		window.localStorage.removeItem('twine-passages-' + id);
 	},
 
-	load(store) {
+	/**
+	 * @param {*} targetId Optional, will only load Vuex from local-storage for that particular
+	 *  story id if specified.
+	 */
+	load(store, targetId) {
 		let stories = {};
+		
+		/// TODO: eww, let's not depend on maintaining a twine-stories array in local-storage,
+		// let's dynamically calculate this based on the keys in window.localStoraget5g
 		const serializedStories = window.localStorage.getItem('twine-stories');
 
 		if (!serializedStories) {
@@ -126,7 +133,7 @@ const story = module.exports = {
 				window.localStorage.getItem('twine-stories-' + id)
 			);
 
-			if (newStory) {
+			if (newStory) {				
 				/* Set defaults if any are missing. */
 
 				Object.keys(storyDefaults).forEach(key => {
@@ -210,6 +217,8 @@ const story = module.exports = {
 		/* Finally, we dispatch actions to add the stories to the store. */
 
 		Object.keys(stories).forEach(id => {
+			// delete story if it already exists
+			deleteStory(store, stories[id]);
 			createStory(store, stories[id]);
 		});
 	}
